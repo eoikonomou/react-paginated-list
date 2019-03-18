@@ -83,6 +83,7 @@ class PaginatedList extends React.Component {
           <List style={pageList}>
             {pages.map(page => (
               <ListItem
+                key={`react-pagination-page_${page}`}
                 onClick={this.selectPageHandler(page)}
                 selected={currentPage === page - 1}
                 style={pageListItem}
