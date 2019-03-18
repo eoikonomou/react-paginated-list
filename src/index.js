@@ -7,7 +7,6 @@ import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PropTypes from 'prop-types';
-import calculatePages from './paginatedListUtils';
 
 const stepSelect = { maxWidth: 100 };
 const pager = { display: 'flex', alignItems: 'center' };
@@ -25,6 +24,40 @@ const styles = theme => ({
     width: '100%',
   },
 });
+
+function calculatePages(numberOfPages, currentPage) {
+  const pages = [];
+  console.log({ numberOfPages, currentPage });
+  let startIndex;
+  let endIndex;
+  if (numberOfPages <= 9) {
+    for (let index = 1; index <= numberOfPages; index += 1) {
+      pages.push(index);
+    }
+  } else if (currentPage <= 5) {
+    for (let index = 1; index < 8; index += 1) {
+      pages.push(index);
+    }
+    pages.push('...');
+    pages.push(numberOfPages);
+  } else if (currentPage + 4 >= numberOfPages) {
+    pages.push('...');
+    startIndex = currentPage - (7 - (numberOfPages - currentPage));
+    for (let index = startIndex; index <= numberOfPages; index += 1) {
+      pages.push(index);
+    }
+  } else {
+    pages.push('...');
+    startIndex = currentPage - 3;
+    endIndex = currentPage + 2;
+    for (let index = startIndex; index <= endIndex; index += 1) {
+      pages.push(index);
+    }
+    pages.push('...');
+    pages.push(numberOfPages);
+  }
+  return pages;
+}
 
 class PaginatedList extends React.Component {
   constructor(props) {
